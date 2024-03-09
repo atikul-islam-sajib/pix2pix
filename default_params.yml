@@ -4,6 +4,7 @@ dataloader:
   batch_size: 1
   img_channels: 3
   p: 0.5
+  normalized: 0.5
 
 model:
   epochs: 200
