@@ -50,21 +50,21 @@ class Generator(nn.Module):
 
     def __init__(self):
         super(Generator, self).__init__()
-        self.netG1 = Encoder(3, 64, 4, 2, 1, False, False)
-        self.netG2 = Encoder(64, 128, 4, 2, 1, True, True)
-        self.netG3 = Encoder(128, 256, 4, 2, 1, True, True)
-        self.netG4 = Encoder(256, 512, 4, 2, 1, True, True)
-        self.netG5 = Encoder(512, 512, 4, 2, 1, True, True)
-        self.netG6 = Encoder(512, 512, 4, 2, 1, True, True)
-        self.netG7 = Encoder(512, 512, 4, 2, 1, True, False)
+        self.net1 = Encoder(3, 64, 4, 2, 1, 0.2, False)
+        self.net2 = Encoder(64, 128, 4, 2, 1, 0.2, True)
+        self.net3 = Encoder(128, 256, 4, 2, 1, 0.2, True)
+        self.net4 = Encoder(256, 512, 4, 2, 1, 0.2, True)
+        self.net5 = Encoder(512, 512, 4, 2, 1, 0.2, True)
+        self.net6 = Encoder(512, 512, 4, 2, 1, 0.2, True)
+        self.net7 = Encoder(512, 512, 4, 2, 1, 0.2, False)
 
-        self.netD1 = Decoder(512, 512, 4, 2, 1, False, True)
-        self.netD2 = Decoder(1024, 512, 4, 2, 1, True, True)
-        self.netD3 = Decoder(1024, 512, 4, 2, 1, True, True)
-        self.netD4 = Decoder(1024, 256, 4, 2, 1, True, True)
-        self.netD5 = Decoder(512, 128, 4, 2, 1, True, True)
-        self.netD6 = Decoder(256, 64, 4, 2, 1, True, True)
-        self.netD7 = Decoder(128, 3, 4, 2, 1, True, False)
+        self.de1 = Decoder(512, 512, 4, 2, 1, 0.2, True)
+        self.de2 = Decoder(1024, 512, 4, 2, 1, 0.2, True)
+        self.de3 = Decoder(1024, 512, 4, 2, 1, 0.2, True)
+        self.de4 = Decoder(1024, 256, 4, 2, 1, 0.2, True)
+        self.de5 = Decoder(512, 128, 4, 2, 1, 0.2, True)
+        self.de6 = Decoder(256, 64, 4, 2, 1, 0.2, True)
+        self.de7 = Decoder(128, 3, 4, 2, 1, 0.2, False)
 
     def forward(self, x):
         """
@@ -76,25 +76,23 @@ class Generator(nn.Module):
         Returns:
             Tensor: The transformed output tensor, having the same shape as the input tensor.
         """
-        x1 = self.netG1(x)
-        x2 = self.netG2(x1)
-        x3 = self.netG3(x2)
-        x4 = self.netG4(x3)
-        x5 = self.netG5(x4)
-        x6 = self.netG6(x5)
+        x1 = self.net1(x)
+        x2 = self.net2(x1)
+        x3 = self.net3(x2)
+        x4 = self.net4(x3)
+        x5 = self.net5(x4)
+        x6 = self.net6(x5)
+        out = self.net7(x6)
 
-        latent_space = self.netG7(x6)
+        x = torch.cat((x6, self.de1(out)), 1)
+        # x = torch.cat((x5, self.de2(x)), 1)
+        # x = torch.cat((x4, self.de3(x)), 1)
+        # x = torch.cat((x3, self.de4(x)), 1)
+        # x = torch.cat((x2, self.de5(x)), 1)
+        # x = torch.cat((x1, self.de6(x)), 1)
+        # x = self.de7(x)
 
-        x = torch.cat((x6, self.netD1(latent_space)), 1)
-        x = torch.cat((x5, self.netD2(x)), 1)
-        x = torch.cat((x4, self.netD3(x)), 1)
-        x = torch.cat((x3, self.netD4(x)), 1)
-        x = torch.cat((x2, self.netD5(x)), 1)
-        x = torch.cat((x1, self.netD6(x)), 1)
-
-        x = self.de7(x)
-
-        return nn.Sigmoid(x)
+        return x
 
 
 if __name__ == "__main__":
@@ -111,5 +109,8 @@ if __name__ == "__main__":
         netG = Generator()
 
         logging.info(netG)
+
+        # print(netG(torch.randn(1, 3, 256, 256)).shape)
+        print(netG(torch.randn(1, 3, 256, 256)).shape)
     else:
         raise Exception("Model not defined".capitalize())

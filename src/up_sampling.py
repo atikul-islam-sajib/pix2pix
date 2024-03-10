@@ -88,7 +88,7 @@ class Decoder(nn.Module):
             nn.Sequential: A sequential container of the constructed decoder block layers.
         """
         layers = OrderedDict()
-        layers["decoder"] = nn.Conv2d(
+        layers["decoder"] = nn.ConvTranspose2d(
             self.in_channels,
             self.out_channels,
             self.kernel_size,
@@ -103,7 +103,7 @@ class Decoder(nn.Module):
 
         return nn.Sequential(layers)
 
-    def forward(self, encoder, x):
+    def forward(self, x, skip_info):
         """
         Defines the forward pass of the Decoder. It concatenates the encoder output with an input tensor along the channel dimension before passing through the decoder block.
 
@@ -114,8 +114,9 @@ class Decoder(nn.Module):
         Returns:
             Tensor: The output tensor after decoding.
         """
-        x = torch.cat((encoder, x), 1)
-        return self.model(x)
+        x = self.model(x)
+        x = torch.cat((x, skip_info), 1)
+        return x
 
 
 if __name__ == "__main__":
