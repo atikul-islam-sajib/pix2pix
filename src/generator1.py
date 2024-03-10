@@ -50,21 +50,24 @@ class Generator(nn.Module):
 
     def __init__(self):
         super(Generator, self).__init__()
-        self.net1 = Encoder(3, 64, 4, 2, 1, 0.2, False)
-        self.net2 = Encoder(64, 128, 4, 2, 1, 0.2, True)
-        self.net3 = Encoder(128, 256, 4, 2, 1, 0.2, True)
-        self.net4 = Encoder(256, 512, 4, 2, 1, 0.2, True)
-        self.net5 = Encoder(512, 512, 4, 2, 1, 0.2, True)
-        self.net6 = Encoder(512, 512, 4, 2, 1, 0.2, True)
-        self.net7 = Encoder(512, 512, 4, 2, 1, 0.2, False)
+        self.encoder_layer1 = Encoder(3, 64, 4, 2, 1, 0.2, False)
+        self.encoder_layer2 = Encoder(64, 128, 4, 2, 1, 0.2, True)
+        self.encoder_layer3 = Encoder(128, 256, 4, 2, 1, 0.2, True)
+        self.encoder_layer4 = Encoder(256, 512, 4, 2, 1, 0.2, True)
+        self.encoder_layer5 = Encoder(512, 512, 4, 2, 1, 0.2, True)
+        self.encoder_layer6 = Encoder(512, 512, 4, 2, 1, 0.2, True)
+        self.encoder_layer7 = Encoder(512, 512, 4, 2, 1, 0.2, False)
 
-        self.de1 = Decoder(512, 512, 4, 2, 1, 0.2, True)
-        self.de2 = Decoder(1024, 512, 4, 2, 1, 0.2, True)
-        self.de3 = Decoder(1024, 512, 4, 2, 1, 0.2, True)
-        self.de4 = Decoder(1024, 256, 4, 2, 1, 0.2, True)
-        self.de5 = Decoder(512, 128, 4, 2, 1, 0.2, True)
-        self.de6 = Decoder(256, 64, 4, 2, 1, 0.2, True)
-        self.de7 = Decoder(128, 3, 4, 2, 1, 0.2, False)
+        # Decoding layers: progressively upsample the feature representation to reconstruct the image
+        self.decoder_layer1 = Decoder(512, 512, 4, 2, 1, True, True)
+        self.decoder_layer2 = Decoder(1024, 512, 4, 2, 1, True, True)
+        self.decoder_layer3 = Decoder(1024, 512, 4, 2, 1, True, True)
+        self.decoder_layer4 = Decoder(1024, 256, 4, 2, 1, True, True)
+        self.decoder_layer5 = Decoder(512, 128, 4, 2, 1, True, True)
+        self.decoder_layer6 = Decoder(256, 64, 4, 2, 1, True, True)
+
+        # Output layer to generate the final image
+        self.output_layer = nn.ConvTranspose2d(128, 3, 4, 2, 1, bias=False)
 
     def forward(self, x):
         """
@@ -76,23 +79,25 @@ class Generator(nn.Module):
         Returns:
             Tensor: The transformed output tensor, having the same shape as the input tensor.
         """
-        x1 = self.net1(x)
-        x2 = self.net2(x1)
-        x3 = self.net3(x2)
-        x4 = self.net4(x3)
-        x5 = self.net5(x4)
-        x6 = self.net6(x5)
-        out = self.net7(x6)
+        enc_layer1_out = self.encoder_layer1(x)
+        enc_layer2_out = self.encoder_layer2(enc_layer1_out)
+        enc_layer3_out = self.encoder_layer3(enc_layer2_out)
+        enc_layer4_out = self.encoder_layer4(enc_layer3_out)
+        enc_layer5_out = self.encoder_layer5(enc_layer4_out)
+        enc_layer6_out = self.encoder_layer6(enc_layer5_out)
+        encoded_out = self.encoder_layer7(enc_layer6_out)
 
-        x = torch.cat((x6, self.de1(out)), 1)
-        # x = torch.cat((x5, self.de2(x)), 1)
-        # x = torch.cat((x4, self.de3(x)), 1)
-        # x = torch.cat((x3, self.de4(x)), 1)
-        # x = torch.cat((x2, self.de5(x)), 1)
-        # x = torch.cat((x1, self.de6(x)), 1)
-        # x = self.de7(x)
+        # Decoder forward pass with skip connections
+        dec_layer1_out = self.decoder_layer1(encoded_out, enc_layer6_out)
+        dec_layer2_out = self.decoder_layer2(dec_layer1_out, enc_layer5_out)
+        dec_layer3_out = self.decoder_layer3(dec_layer2_out, enc_layer4_out)
+        dec_layer4_out = self.decoder_layer4(dec_layer3_out, enc_layer3_out)
+        dec_layer5_out = self.decoder_layer5(dec_layer4_out, enc_layer2_out)
+        dec_layer6_out = self.decoder_layer6(dec_layer5_out, enc_layer1_out)
 
-        return x
+        # Final output
+        final_output = self.output_layer(dec_layer6_out)
+        return torch.sigmoid(final_output)
 
 
 if __name__ == "__main__":
@@ -109,8 +114,5 @@ if __name__ == "__main__":
         netG = Generator()
 
         logging.info(netG)
-
-        # print(netG(torch.randn(1, 3, 256, 256)).shape)
-        print(netG(torch.randn(1, 3, 256, 256)).shape)
     else:
         raise Exception("Model not defined".capitalize())
