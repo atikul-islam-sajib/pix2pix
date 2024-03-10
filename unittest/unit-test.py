@@ -10,6 +10,32 @@ from discriminator import Discriminator
 
 
 class UnitTest(unittest.TestCase):
+    """
+    This module contains unit tests for the Generative Adversarial Network (GAN) components, including the Generator and Discriminator models, as well as data loading functionalities. These tests ensure that the models and data handling processes perform as expected.
+
+    ## Classes
+
+    - `UnitTest`: A suite of tests for validating the integrity and expected behavior of the GAN components.
+
+    ## Usage
+
+    To run these tests, navigate to the directory containing this script and execute:
+
+    ```bash
+    python -m unittest <name_of_this_test_file>.py
+
+
+    ## Methods
+
+    - `setUp`: Initializes the components and data required for the tests.
+    - `test_quantity_of_data`: Verifies the total quantity of data items in the dataloader.
+    - `test_size_of_data`: Checks the size of a data batch from the dataloader.
+    - `test_generator_params`: Confirms the total number of parameters in the Generator model.
+    - `test_generate_image_size`: Ensures the output size of the Generator model is as expected.
+    - `test_discriminator_params`: Validates the total number of parameters in the Discriminator model.
+    - `test_discriminator_image_size`: Asserts the output size of the Discriminator model is correct.
+    """
+
     def setUp(self):
         self.dataloader = load_pickle(path="./data/processed/dataloader.pkl")
         self.netG = Generator()
