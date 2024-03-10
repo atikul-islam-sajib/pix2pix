@@ -39,7 +39,7 @@ class UnitTest(unittest.TestCase):
 
     def setUp(self):
         self.dataloader = load_pickle(path="./data/processed/dataloader.pkl")
-        # self.netG = Generator()
+        self.netG = Generator()
         self.netD = Discriminator()
         self.netG1 = Generator()
         self.data = torch.randn(1, 3, 256, 512)
@@ -56,13 +56,13 @@ class UnitTest(unittest.TestCase):
         data, _ = next(iter(self.dataloader))
         self.assertEqual(data.size(), torch.Size([1, 3, 256, 512]))
 
-    # def test_generator_params(self):
-    #     self.assertEquals(
-    #         sum(params.numel() for params in self.netG.parameters()), 41828992
-    #     )
+    def test_generator_params(self):
+        self.assertEquals(
+            sum(params.numel() for params in self.netG.parameters()), 41828992
+        )
 
-    # def test_generate_image_size(self):
-    #     self.assertEqual(self.netG(self.data).size(), torch.Size([1, 3, 256, 512]))
+    def test_generate_image_size(self):
+        self.assertEqual(self.netG(self.data).size(), torch.Size([1, 3, 256, 512]))
 
     def test_discriminator_params(self):
         self.assertEquals(
