@@ -1,6 +1,7 @@
 import logging
 import argparse
 import torch.nn as nn
+from collections import OrderedDict
 
 logging.basicConfig(
     level=logging.INFO,
@@ -51,21 +52,46 @@ class Discriminator(nn.Module):
         Initializes the Discriminator model with a predefined sequence of layers configured to take concatenated real and generated images as input and output a single value indicating the perceived authenticity of the input images.
         """
         super(Discriminator, self).__init__()
-        self.model = nn.Sequential(
-            nn.Conv2d(3 * 2, 64, 4, 2, 1),
-            nn.LeakyReLU(0.2, inplace=True),
-            nn.Conv2d(64, 128, 4, 2, 1),
-            nn.LeakyReLU(0.2, inplace=True),
-            nn.BatchNorm2d(128),
-            nn.Conv2d(128, 256, 4, 2, 1),
-            nn.LeakyReLU(0.2, inplace=True),
-            nn.BatchNorm2d(256),
-            nn.Conv2d(256, 512, 4, 1, 1),
-            nn.LeakyReLU(0.2, inplace=True),
-            nn.BatchNorm2d(512),
-            nn.Conv2d(512, 1, 4, 1, 1),
-            nn.Sigmoid(),
-        )
+        self.layers_config = [
+            (3 * 2, 64, 4, 2, 1, 0.2, False),
+            (64, 128, 4, 2, 1, 0.2, True),
+            (128, 256, 4, 2, 1, 0.2, True),
+            (256, 512, 4, 1, 1, 0.2, True),
+            (512, 1, 4, 1, 1),
+        ]
+
+        self.model = self.connected_layer(layers_config=self.layers_config)
+
+    def connected_layer(self, layers_config=None):
+        layers = OrderedDict()
+        if layers_config is not None:
+            for index, (
+                in_channels,
+                out_channels,
+                kernel_size,
+                stride,
+                padding,
+                slope,
+                batch_norm,
+            ) in enumerate(self.layers_config[:-1]):
+                layers[f"conv2d_{index+1}"] = nn.Conv2d(
+                    in_channels, out_channels, kernel_size, stride, padding, bias=False
+                )
+                layers[f"leakyReLU_{index+1}"] = nn.LeakyReLU(slope, inplace=True)
+                if batch_norm:
+                    layers[f"batchnorm2d_{index+1}"] = nn.BatchNorm2d(out_channels)
+
+            (in_channels, out_channels, kernel_size, stride, padding) = (
+                self.layers_config[-1]
+            )
+            layers["out"] = nn.Conv2d(
+                in_channels, out_channels, kernel_size, stride, padding, bias=False
+            )
+            layers["sigmoid"] = nn.Sigmoid()
+
+            return nn.Sequential(layers)
+        else:
+            raise ValueError("layers_config cannot be None".capitalize())
 
     def forward(self, x):
         """
@@ -108,7 +134,6 @@ if __name__ == "__main__":
 
     if args.model:
         netD = Discriminator()
-
         logging.info(netD)
     else:
         raise Exception("Please provide the correct arguments".capitalize())
