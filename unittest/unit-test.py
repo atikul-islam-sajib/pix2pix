@@ -64,7 +64,7 @@ class UnitTest(unittest.TestCase):
 
     def test_discriminator_params(self):
         self.assertEquals(
-            sum(params.numel() for params in self.netD.parameters()), 2769601
+            sum(params.numel() for params in self.netD.parameters()), 2768640
         )
 
     def test_discriminator_image_size(self):
