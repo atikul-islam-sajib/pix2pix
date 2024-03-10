@@ -75,6 +75,7 @@ class Encoder(nn.Module):
         self.padding = padding
         self.use_leakyReLU = use_leakyReLU
         self.use_norm = use_norm
+
         self.model = self.encoder_block()
 
     def encoder_block(self):
