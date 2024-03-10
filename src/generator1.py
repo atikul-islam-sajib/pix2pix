@@ -9,7 +9,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     filemode="a",
-    filename="logs/decoder.log",
+    filename="logs/generator1.log",
 )
 sys.path.append("src/")
 
