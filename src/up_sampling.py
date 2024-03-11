@@ -68,6 +68,7 @@ class Decoder(nn.Module):
         padding=None,
         use_leakyReLU=None,
         use_norm=None,
+        use_dropout=None,
     ):
         super(Decoder, self).__init__()
         self.in_channels = in_channels
@@ -77,6 +78,7 @@ class Decoder(nn.Module):
         self.padding = padding
         self.use_leakyReLU = use_leakyReLU
         self.use_norm = use_norm
+        self.use_dropout = use_dropout
 
         self.model = self.decoder_block()
 
@@ -100,6 +102,8 @@ class Decoder(nn.Module):
             layers["ReLU"] = nn.ReLU(inplace=True)
         if self.use_norm:
             layers["batch_norm"] = nn.BatchNorm2d(self.out_channels)
+        if self.use_dropout:
+            layers["dropout"] = nn.Dropout2d(p=0.5)
 
         return nn.Sequential(layers)
 
