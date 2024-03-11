@@ -1,8 +1,7 @@
-2024-03-10 18:15:34,872 - root - INFO - Generator(
+2024-03-11 13:40:56,233 - root - INFO - Generator(
   (encoder_layer1): Encoder(
     (model): Sequential(
       (encoder): Conv2d(3, 64, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
-      (leakyReLU): LeakyReLU(negative_slope=0.2, inplace=True)
     )
   )
   (encoder_layer2): Encoder(
@@ -51,6 +50,7 @@
       (decoder): ConvTranspose2d(512, 512, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
       (ReLU): ReLU(inplace=True)
       (batch_norm): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (dropout): Dropout2d(p=0.5, inplace=False)
     )
   )
   (decoder_layer2): Decoder(
@@ -58,6 +58,7 @@
       (decoder): ConvTranspose2d(1024, 512, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
       (ReLU): ReLU(inplace=True)
       (batch_norm): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (dropout): Dropout2d(p=0.5, inplace=False)
     )
   )
   (decoder_layer3): Decoder(
@@ -65,6 +66,7 @@
       (decoder): ConvTranspose2d(1024, 512, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
       (ReLU): ReLU(inplace=True)
       (batch_norm): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (dropout): Dropout2d(p=0.5, inplace=False)
     )
   )
   (decoder_layer4): Decoder(
