@@ -50,21 +50,21 @@ class Generator(nn.Module):
 
     def __init__(self):
         super(Generator, self).__init__()
-        self.encoder_layer1 = Encoder(3, 64, 4, 2, 1, 0.2, False)
-        self.encoder_layer2 = Encoder(64, 128, 4, 2, 1, 0.2, True)
-        self.encoder_layer3 = Encoder(128, 256, 4, 2, 1, 0.2, True)
-        self.encoder_layer4 = Encoder(256, 512, 4, 2, 1, 0.2, True)
-        self.encoder_layer5 = Encoder(512, 512, 4, 2, 1, 0.2, True)
-        self.encoder_layer6 = Encoder(512, 512, 4, 2, 1, 0.2, True)
-        self.encoder_layer7 = Encoder(512, 512, 4, 2, 1, 0.2, False)
+        self.encoder_layer1 = Encoder(3, 64, 4, 2, 1, False, False)
+        self.encoder_layer2 = Encoder(64, 128, 4, 2, 1, True, True)
+        self.encoder_layer3 = Encoder(128, 256, 4, 2, 1, True, True)
+        self.encoder_layer4 = Encoder(256, 512, 4, 2, 1, True, True)
+        self.encoder_layer5 = Encoder(512, 512, 4, 2, 1, True, True)
+        self.encoder_layer6 = Encoder(512, 512, 4, 2, 1, True, True)
+        self.encoder_layer7 = Encoder(512, 512, 4, 2, 1, True, False)
 
         # Decoding layers: progressively upsample the feature representation to reconstruct the image
-        self.decoder_layer1 = Decoder(512, 512, 4, 2, 1, True, True)
-        self.decoder_layer2 = Decoder(1024, 512, 4, 2, 1, True, True)
-        self.decoder_layer3 = Decoder(1024, 512, 4, 2, 1, True, True)
-        self.decoder_layer4 = Decoder(1024, 256, 4, 2, 1, True, True)
-        self.decoder_layer5 = Decoder(512, 128, 4, 2, 1, True, True)
-        self.decoder_layer6 = Decoder(256, 64, 4, 2, 1, True, True)
+        self.decoder_layer1 = Decoder(512, 512, 4, 2, 1, True, True, True)
+        self.decoder_layer2 = Decoder(1024, 512, 4, 2, 1, True, True, True)
+        self.decoder_layer3 = Decoder(1024, 512, 4, 2, 1, True, True, True)
+        self.decoder_layer4 = Decoder(1024, 256, 4, 2, 1, True, True, False)
+        self.decoder_layer5 = Decoder(512, 128, 4, 2, 1, True, True, False)
+        self.decoder_layer6 = Decoder(256, 64, 4, 2, 1, True, True, False)
 
         # Output layer to generate the final image
         self.output_layer = nn.ConvTranspose2d(128, 3, 4, 2, 1, bias=False)
