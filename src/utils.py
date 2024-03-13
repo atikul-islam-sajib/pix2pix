@@ -3,6 +3,7 @@ import os
 import yaml
 import joblib
 import torch
+import warnings
 
 sys.path.append("src/")
 
@@ -39,3 +40,15 @@ def device_init(device="mps"):
         return torch.device("cuda" if torch.cuda.is_available() else "cpu")
     else:
         return torch.device("cpu")
+
+
+def ignore_warnings():
+    warnings.filterwarnings("ignore")
+
+
+def saved_config(config_file=None, filename=None):
+    if config_file is not None and filename is not None:
+        with open(os.path.join(filename, ".yml"), "w") as file:
+            yaml.safe_dump(config_file, file)
+    else:
+        raise ValueError("Define the arguments properly".capitalize())
