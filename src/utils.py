@@ -30,3 +30,12 @@ def weight_init(m):
             torch.nn.init.constant_(m.bias.data, 0.0)
     else:
         raise ValueError("Model is not defined".capitalize())
+
+
+def device_init(device="mps"):
+    if device == "mps":
+        return torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+    elif device == "cuda":
+        return torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    else:
+        return torch.device("cpu")
