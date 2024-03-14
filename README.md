@@ -37,28 +37,41 @@ A comprehensive list of options for configuring the training and testing of the 
 
 ## Installation
 
-To set up the Pix2Pix project for image translation, clone the repository and install the required dependencies:
+Clone the repository:
+
+```
+git clone https://github.com/atikul-islam-sajib/pix2pix.git
+cd pix2pix
+```
+
+# Install dependencies
+
+```
+pip install -r requirements.txt
+```
+
+## Usage
+
+Examples of commands - test and their explanations(Do the training and testing).
 
 ```bash
-git clone https://github.com/your/pix2pix-repository.git
-cd pix2pix-directory
-pip install -r requirements.txt
+python /path/to/pix2pix/src/cli.py --help
 ```
 
 ## Training Command Comparison
 
 The table below compares the commands for training the Pix2Pix model across different devices, illustrating how to adapt the training process to CPU, GPU, and MPS environments.
 
-| Device Type         | Command                                                                                                                                         |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| CPU                 | `python main.py --train --dataset path/to/your/dataset.zip --epochs 20 --lr 0.0002 --beta1 0.5 --lambda_value 100 --device cpu --display True`  |
-| GPU                 | `python main.py --train --dataset path/to/your/dataset.zip --epochs 20 --lr 0.0002 --beta1 0.5 --lambda_value 100 --device cuda --display True` |
-| Apple Silicon (MPS) | `python main.py --train --dataset path/to/your/dataset.zip --epochs 20 --lr 0.0002 --beta1 0.5 --lambda_value 100 --device mps --display True`  |
+| Device Type         | Command                                                                                                                                                            |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| CPU                 | `python /path/to/pix2pix/src/cli.py --train --dataset path/to/your/dataset.zip --epochs 20 --lr 0.0002 --beta1 0.5 --lambda_value 100 --device cpu --display True` |
+| GPU                 | `python /path/to/pix2pix/src/cli.py--train --dataset path/to/your/dataset.zip --epochs 20 --lr 0.0002 --beta1 0.5 --lambda_value 100 --device cuda --display True` |
+| Apple Silicon (MPS) | `python /path/to/pix2pix/src/cli.py --train --dataset path/to/your/dataset.zip --epochs 20 --lr 0.0002 --beta1 0.5 --lambda_value 100 --device mps --display True` |
 
 ## Testing Command
 
 ```bash
-python main.py --test --samples 20 --device [device_type]
+python /path/to/pix2pix/src/cli.py --test --samples 20 --device [device_type]
 ```
 
 Adjust the `--device` option based on the hardware (CPU, GPU, or MPS) to leverage specific computational resources.
