@@ -139,7 +139,7 @@ The procedure remains consistent with the CUDA and MPS sections, with the device
 
 ## Documentation
 
-For detailed documentation on the implementation and usage, visit the -> [AC-GAN Documentation](https://atikul-islam-sajib.github.io/AC-GAN-deploy/).
+For detailed documentation on the implementation and usage, visit the -> [pix2pix GAN Documentation](https://atikul-islam-sajib.github.io/pix2pix-deploy/).
 
 ## Contributing
 
