@@ -15,7 +15,7 @@ logging.basicConfig(
 sys.path.append("src/")
 
 from generator import Generator
-from utils import device_init, load_pickle
+from utils import device_init, load_pickle, ignore_warnings
 from config import (
     LAST_CHECKPOINTS,
     PROCESSED_DATA_PATH,
@@ -175,6 +175,7 @@ class Test:
         and GIF generation.
         """
         try:
+            ignore_warnings()
             netG = Generator().to(self.device)
             netG.load_state_dict(self.select_best_model())
         except Exception as e:
