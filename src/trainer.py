@@ -23,6 +23,7 @@ from utils import (
     load_pickle,
     ignore_warnings,
     saved_config,
+    clean,
 )
 from config import (
     PROCESSED_DATA_PATH,
@@ -89,6 +90,7 @@ class Trainer:
         lambda_value=50,
         device="mps",
         display=True,
+        clean_folder=True,
     ):
         self.epochs = epochs
         self.device = device
@@ -99,6 +101,7 @@ class Trainer:
         self.steps = 1000
         self.images = 64
         self.display = display
+        self.is_clean = clean_folder
 
     def __setup__(self, activate=False):
         """
@@ -337,6 +340,7 @@ class Trainer:
           are setup and passed through the `__setup__` method when `activate=True`.
         """
         self.__setup__(activate=activate)
+        clean(activate=self.is_clean)
         ignore_warnings()
 
         for epoch in range(self.epochs):

@@ -6,7 +6,7 @@ import torch
 import warnings
 
 sys.path.append("src/")
-from config import TRAIN_CHECKPOINTS, LAST_CHECKPOINTS
+from config import TRAIN_CHECKPOINTS, LAST_CHECKPOINTS, TEST_IMAGES
 
 
 def params():
@@ -55,10 +55,17 @@ def saved_config(config_file=None, filename=None):
         raise ValueError("Define the arguments properly".capitalize())
 
 
-def clean():
-    if os.path.exists(TRAIN_CHECKPOINTS) and os.path.exists(LAST_CHECKPOINTS):
-        for file in os.listdir(TRAIN_CHECKPOINTS):
-            os.remove(os.path.join(TRAIN_CHECKPOINTS, file))
+def clean(activate=True):
+    if activate == True:
+        if os.path.exists(TRAIN_CHECKPOINTS) and os.path.exists(LAST_CHECKPOINTS):
+            for file in os.listdir(TRAIN_CHECKPOINTS):
+                os.remove(os.path.join(TRAIN_CHECKPOINTS, file))
 
-        for file in os.listdir(LAST_CHECKPOINTS):
-            os.remove(os.path.join(LAST_CHECKPOINTS, file))
+            for file in os.listdir(LAST_CHECKPOINTS):
+                os.remove(os.path.join(LAST_CHECKPOINTS, file))
+
+        if os.path.join(TEST_IMAGES):
+            for file in os.listdir(TEST_IMAGES):
+                os.remove(os.path.join(TEST_IMAGES, file))
+    else:
+        raise ValueError("Define the arguments properly".capitalize())
