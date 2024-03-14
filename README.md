@@ -1,6 +1,6 @@
 # Pix2Pix Image Translation
 
-![AC-GAN - Medical Image Dataset Generator: Generated Image with labels](./outputs/test_images/test.png)
+<img src="./outputs/test_images/test.png" alt="AC-GAN - Medical Image Dataset Generator: Generated Image with labels" width="600" height="400">
 
 This project implements the Pix2Pix Generative Adversarial Network (GAN) for image-to-image translation tasks. It is designed to work with custom datasets, enabling the transformation of input images into desired output formats. This README outlines the setup and usage of the project for training and testing models on various datasets.
 
