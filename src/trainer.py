@@ -422,10 +422,9 @@ if __name__ == "__main__":
             }
         }
         logging.info("Training the model".title())
-
-        saved_config(config_file=train_config, filename="./train/")
-
         trainer.train(activate=True)
+
+        saved_config(config_file=train_config, filename="./train")
 
         logging.info("Training completed".title())
     else:
