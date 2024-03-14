@@ -428,7 +428,7 @@ if __name__ == "__main__":
         logging.info("Training the model".title())
         trainer.train(activate=True)
 
-        saved_config(config_file=train_config, filename="./train")
+        saved_config(config_file=train_config, filename="./train_params.yml")
 
         logging.info("Training completed".title())
     else:

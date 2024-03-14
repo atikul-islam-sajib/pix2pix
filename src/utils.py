@@ -101,7 +101,7 @@ def saved_config(config_file=None, filename=None):
         ValueError: If either 'config_file' or 'filename' is not provided.
     """
     if config_file is not None and filename is not None:
-        with open(os.path.join(filename, ".yml"), "w") as file:
+        with open(os.path.join(filename), "w") as file:
             yaml.safe_dump(config_file, file)
     else:
         raise ValueError("Define the arguments properly".capitalize())
