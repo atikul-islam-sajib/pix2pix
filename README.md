@@ -13,6 +13,10 @@ This project implements the Pix2Pix Generative Adversarial Network (GAN) for ima
 - **Multi-device Support:** Run models on CPU, GPU, and Apple Silicon (MPS) to leverage different hardware capabilities.
 - **Interactive Sample Generation:** Generate and display output samples during the testing phase for immediate feedback.
 
+## Demo - During training
+
+![AC-GAN - Medical Image Dataset Generator with class labels: Gif file](./outputs/train_gif/result.gif)
+
 ## Full Command Options
 
 A comprehensive list of options for configuring the training and testing of the Pix2Pix model:
