@@ -15,7 +15,9 @@ This project implements the Pix2Pix Generative Adversarial Network (GAN) for ima
 
 ## Demo - During training
 
-![AC-GAN - Medical Image Dataset Generator with class labels: Gif file](./outputs/train_gif/result.gif)
+<div align="center">
+    <img src="./outputs/train_gif/result.gif" alt="AC-GAN - Medical Image Dataset Generator with class labels: Gif file" width="600" height="400">
+</div>
 
 ## Full Command Options
 
