@@ -1,5 +1,5 @@
 RAW_DATA_PATH = "./data/raw/"
 PROCESSED_DATA_PATH = "./data/processed/"
 TRAIN_CHECKPOINTS = "./checkpoints/train_models/"
-LAST_CHECKPOINTS = "./checkpoints/last_model/"
+LAST_CHECKPOINTS = "./checkpoints/best_model/"
 TRAIN_IMAGES = "./outputs/train_images/"
