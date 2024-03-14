@@ -88,9 +88,7 @@ class Test:
     def select_best_model(self):
         if os.path.exists(LAST_CHECKPOINTS):
             return torch.load(
-                os.path.join(
-                    "/Users/shahmuhammadraditrahman/Desktop/pix2pix/checkpoints/best_model/last_netG.pth"
-                )
+                os.path.join(os.path.join(LAST_CHECKPOINTS, "last_netG.pth"))
             )
         else:
             raise Exception("No checkpoints found".capitalize())
