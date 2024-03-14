@@ -1,0 +1,19 @@
+site_name: Pix2Pix - Image to Image translation
+
+nav:
+  - Home: index.md
+  - DataLoader: dataloader.md
+  - Encoder: encoder.md
+  - Decoder: decoder.md
+  - Generator: generator.md
+  - Discriminator: discriminator.md
+  - Trainer: trainer.md
+  - Test: test.md
+  - CLI: cli.md
+
+theme: readthedocs
+plugins:
+  - mkdocstrings
+
+extra_css:
+  - css/custom.css

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Generator - Pix2Pix - Image to Image translation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../css/custom.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Generator";
+        var mkdocs_page_input_path = "generator.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Pix2Pix - Image to Image translation
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../dataloader/">DataLoader</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../encoder/">Encoder</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../decoder/">Decoder</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Generator</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../discriminator/">Discriminator</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../trainer/">Trainer</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../test/">Test</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../cli/">CLI</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Pix2Pix - Image to Image translation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Generator</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<a id="generator"></a>
+  <div class="doc doc-contents first">
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="generator.Generator" class="doc doc-heading">
+          <code>Generator</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="torch.Module">Module</span></code></p>
+
+  
+      <p>Implements a Generator model for image-to-image translation tasks, specifically designed to incorporate a series of encoding and decoding blocks. This class leverages custom Encoder and Decoder modules to progressively downsample and then upsample an input image, potentially for tasks such as image segmentation, style transfer, or data augmentation.</p>
+<h4 id="generator.Generator--attributes">Attributes</h4>
+<p>The Generator is composed of several Encoder (<code>netG1</code> to <code>netG7</code>) and Decoder (<code>netD1</code> to <code>netD7</code>) blocks. Each block is responsible for a stage of down-sampling or up-sampling and is parameterized by its own set of hyperparameters including the number of input and output channels, kernel size, stride, and padding.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>netG1-netG7</td>
+<td><code>Encoder</code></td>
+<td>Encoder blocks for down-sampling the input image.</td>
+</tr>
+<tr>
+<td>netD1-netD7</td>
+<td><code>Decoder</code></td>
+<td>Decoder blocks for up-sampling the encoded representation back to the target resolution.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="generator.Generator--methods">Methods</h4>
+<ul>
+<li><code>forward(x)</code>: Defines the forward pass of the Generator with input <code>x</code>.</li>
+</ul>
+<h4 id="generator.Generator--example-usage">Example Usage</h4>
+<pre><code class="language-python"># Initialize the Generator model.
+gen = Generator()
+
+# Assuming `x` is your input tensor with the appropriate dimensions (e.g., [batch_size, channels, height, width]).
+# Generate the transformed image.
+transformed_image = gen(x)
+</code></pre>
+<p>This Generator model can be adapted and extended depending on the specific requirements of your image-to-image translation task. Its modular design allows for customization of the encoding and decoding stages.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>generator.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Generator</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implements a Generator model for image-to-image translation tasks, specifically designed to incorporate a series of encoding and decoding blocks. This class leverages custom Encoder and Decoder modules to progressively downsample and then upsample an input image, potentially for tasks such as image segmentation, style transfer, or data augmentation.</span>
+
+<span class="sd">    ## Attributes</span>
+
+<span class="sd">    The Generator is composed of several Encoder (`netG1` to `netG7`) and Decoder (`netD1` to `netD7`) blocks. Each block is responsible for a stage of down-sampling or up-sampling and is parameterized by its own set of hyperparameters including the number of input and output channels, kernel size, stride, and padding.</span>
+
+<span class="sd">    | Attribute | Type      | Description                                            |</span>
+<span class="sd">    |-----------|-----------|--------------------------------------------------------|</span>
+<span class="sd">    | netG1-netG7 | `Encoder` | Encoder blocks for down-sampling the input image.      |</span>
+<span class="sd">    | netD1-netD7 | `Decoder` | Decoder blocks for up-sampling the encoded representation back to the target resolution. |</span>
+
+<span class="sd">    ## Methods</span>
+
+<span class="sd">    - `forward(x)`: Defines the forward pass of the Generator with input `x`.</span>
+
+<span class="sd">    ## Example Usage</span>
+
+<span class="sd">    ```python</span>
+<span class="sd">    # Initialize the Generator model.</span>
+<span class="sd">    gen = Generator()</span>
+
+<span class="sd">    # Assuming `x` is your input tensor with the appropriate dimensions (e.g., [batch_size, channels, height, width]).</span>
+<span class="sd">    # Generate the transformed image.</span>
+<span class="sd">    transformed_image = gen(x)</span>
+<span class="sd">    ```</span>
+
+<span class="sd">    This Generator model can be adapted and extended depending on the specific requirements of your image-to-image translation task. Its modular design allows for customization of the encoding and decoding stages.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Generator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer1</span> <span class="o">=</span> <span class="n">Encoder</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer2</span> <span class="o">=</span> <span class="n">Encoder</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer3</span> <span class="o">=</span> <span class="n">Encoder</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer4</span> <span class="o">=</span> <span class="n">Encoder</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer5</span> <span class="o">=</span> <span class="n">Encoder</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer6</span> <span class="o">=</span> <span class="n">Encoder</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer7</span> <span class="o">=</span> <span class="n">Encoder</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># Decoding layers: progressively upsample the feature representation to reconstruct the image</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer1</span> <span class="o">=</span> <span class="n">Decoder</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer2</span> <span class="o">=</span> <span class="n">Decoder</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer3</span> <span class="o">=</span> <span class="n">Decoder</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer4</span> <span class="o">=</span> <span class="n">Decoder</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer5</span> <span class="o">=</span> <span class="n">Decoder</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer6</span> <span class="o">=</span> <span class="n">Decoder</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># Output layer to generate the final image</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">ConvTranspose2d</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Performs the forward pass of the Generator, sequentially passing the input through each encoder block, reaching a latent representation, and then progressively up-sampling and merging this representation through the decoder blocks to produce the final output image.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            x (Tensor): The input tensor to the Generator model, typically an image or batch of images with shape `[batch_size, channels, height, width]`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tensor: The transformed output tensor, having the same shape as the input tensor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">enc_layer1_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">enc_layer2_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer2</span><span class="p">(</span><span class="n">enc_layer1_out</span><span class="p">)</span>
+        <span class="n">enc_layer3_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer3</span><span class="p">(</span><span class="n">enc_layer2_out</span><span class="p">)</span>
+        <span class="n">enc_layer4_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer4</span><span class="p">(</span><span class="n">enc_layer3_out</span><span class="p">)</span>
+        <span class="n">enc_layer5_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer5</span><span class="p">(</span><span class="n">enc_layer4_out</span><span class="p">)</span>
+        <span class="n">enc_layer6_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer6</span><span class="p">(</span><span class="n">enc_layer5_out</span><span class="p">)</span>
+        <span class="n">encoded_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer7</span><span class="p">(</span><span class="n">enc_layer6_out</span><span class="p">)</span>
+
+        <span class="c1"># Decoder forward pass with skip connections</span>
+        <span class="n">dec_layer1_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer1</span><span class="p">(</span><span class="n">encoded_out</span><span class="p">,</span> <span class="n">enc_layer6_out</span><span class="p">)</span>
+        <span class="n">dec_layer2_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer2</span><span class="p">(</span><span class="n">dec_layer1_out</span><span class="p">,</span> <span class="n">enc_layer5_out</span><span class="p">)</span>
+        <span class="n">dec_layer3_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer3</span><span class="p">(</span><span class="n">dec_layer2_out</span><span class="p">,</span> <span class="n">enc_layer4_out</span><span class="p">)</span>
+        <span class="n">dec_layer4_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer4</span><span class="p">(</span><span class="n">dec_layer3_out</span><span class="p">,</span> <span class="n">enc_layer3_out</span><span class="p">)</span>
+        <span class="n">dec_layer5_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer5</span><span class="p">(</span><span class="n">dec_layer4_out</span><span class="p">,</span> <span class="n">enc_layer2_out</span><span class="p">)</span>
+        <span class="n">dec_layer6_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer6</span><span class="p">(</span><span class="n">dec_layer5_out</span><span class="p">,</span> <span class="n">enc_layer1_out</span><span class="p">)</span>
+
+        <span class="c1"># Final output</span>
+        <span class="n">final_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="p">(</span><span class="n">dec_layer6_out</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">final_output</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="generator.Generator.forward" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Performs the forward pass of the Generator, sequentially passing the input through each encoder block, reaching a latent representation, and then progressively up-sampling and merging this representation through the decoder blocks to produce the final output image.</p>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>x</code></b>
+                  (<code>Tensor</code>)
+              –
+              <div class="doc-md-description">
+                <p>The input tensor to the Generator model, typically an image or batch of images with shape <code>[batch_size, channels, height, width]</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+    <th class="field-name">Returns:</th>
+    <td class="field-body">
+      <ul class="first simple">
+          <li>
+<b><code>Tensor</code></b>            –
+            <div class="doc-md-description">
+              <p>The transformed output tensor, having the same shape as the input tensor.</p>
+            </div>
+          </li>
+      </ul>
+    </td>
+    </tr>
+  </tbody>
+</table>
+          <details class="quote">
+            <summary>Source code in <code>generator.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Performs the forward pass of the Generator, sequentially passing the input through each encoder block, reaching a latent representation, and then progressively up-sampling and merging this representation through the decoder blocks to produce the final output image.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        x (Tensor): The input tensor to the Generator model, typically an image or batch of images with shape `[batch_size, channels, height, width]`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Tensor: The transformed output tensor, having the same shape as the input tensor.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">enc_layer1_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">enc_layer2_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer2</span><span class="p">(</span><span class="n">enc_layer1_out</span><span class="p">)</span>
+    <span class="n">enc_layer3_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer3</span><span class="p">(</span><span class="n">enc_layer2_out</span><span class="p">)</span>
+    <span class="n">enc_layer4_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer4</span><span class="p">(</span><span class="n">enc_layer3_out</span><span class="p">)</span>
+    <span class="n">enc_layer5_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer5</span><span class="p">(</span><span class="n">enc_layer4_out</span><span class="p">)</span>
+    <span class="n">enc_layer6_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer6</span><span class="p">(</span><span class="n">enc_layer5_out</span><span class="p">)</span>
+    <span class="n">encoded_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_layer7</span><span class="p">(</span><span class="n">enc_layer6_out</span><span class="p">)</span>
+
+    <span class="c1"># Decoder forward pass with skip connections</span>
+    <span class="n">dec_layer1_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer1</span><span class="p">(</span><span class="n">encoded_out</span><span class="p">,</span> <span class="n">enc_layer6_out</span><span class="p">)</span>
+    <span class="n">dec_layer2_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer2</span><span class="p">(</span><span class="n">dec_layer1_out</span><span class="p">,</span> <span class="n">enc_layer5_out</span><span class="p">)</span>
+    <span class="n">dec_layer3_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer3</span><span class="p">(</span><span class="n">dec_layer2_out</span><span class="p">,</span> <span class="n">enc_layer4_out</span><span class="p">)</span>
+    <span class="n">dec_layer4_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer4</span><span class="p">(</span><span class="n">dec_layer3_out</span><span class="p">,</span> <span class="n">enc_layer3_out</span><span class="p">)</span>
+    <span class="n">dec_layer5_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer5</span><span class="p">(</span><span class="n">dec_layer4_out</span><span class="p">,</span> <span class="n">enc_layer2_out</span><span class="p">)</span>
+    <span class="n">dec_layer6_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder_layer6</span><span class="p">(</span><span class="n">dec_layer5_out</span><span class="p">,</span> <span class="n">enc_layer1_out</span><span class="p">)</span>
+
+    <span class="c1"># Final output</span>
+    <span class="n">final_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="p">(</span><span class="n">dec_layer6_out</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">final_output</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../decoder/" class="btn btn-neutral float-left" title="Decoder"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../discriminator/" class="btn btn-neutral float-right" title="Discriminator">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../decoder/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../discriminator/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

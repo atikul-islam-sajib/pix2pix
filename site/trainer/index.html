@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Trainer - Pix2Pix - Image to Image translation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../css/custom.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Trainer";
+        var mkdocs_page_input_path = "trainer.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Pix2Pix - Image to Image translation
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../dataloader/">DataLoader</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../encoder/">Encoder</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../decoder/">Decoder</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../generator/">Generator</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../discriminator/">Discriminator</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Trainer</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../test/">Test</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../cli/">CLI</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Pix2Pix - Image to Image translation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Trainer</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p>A Trainer class for training Generative Adversarial Networks (GANs), specifically designed to handle image-to-imag translation tasks. This class encapsulates the setup, training, and saving functionalities for both generator and discriminator models within the GAN architecture.</p>
+<h3 id="parameters">Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>epochs</code></td>
+<td>int</td>
+<td>50</td>
+<td>Number of epochs to train the model.</td>
+</tr>
+<tr>
+<td><code>lr</code></td>
+<td>float</td>
+<td>0.0002</td>
+<td>Learning rate for Adam optimizers.</td>
+</tr>
+<tr>
+<td><code>beta1</code></td>
+<td>float</td>
+<td>0.5</td>
+<td>Beta1 hyperparameter for Adam optimizers.</td>
+</tr>
+<tr>
+<td><code>lambda_value</code></td>
+<td>int</td>
+<td>50</td>
+<td>Lambda weight for L1 loss in generator loss computation.</td>
+</tr>
+<tr>
+<td><code>device</code></td>
+<td>str</td>
+<td>"mps"</td>
+<td>Device on which the model will be trained ("cpu", "cuda", "mps").</td>
+</tr>
+<tr>
+<td><code>display</code></td>
+<td>bool</td>
+<td>True</td>
+<td>If True, training progress is printed to stdout; otherwise, logged.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="attributes">Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dataloader</code></td>
+<td>DataLoader</td>
+<td>The DataLoader instance holding the training data.</td>
+</tr>
+<tr>
+<td><code>device</code></td>
+<td>torch.device</td>
+<td>Computed device based on user input and availability.</td>
+</tr>
+<tr>
+<td><code>netG</code></td>
+<td>Generator</td>
+<td>The generator model.</td>
+</tr>
+<tr>
+<td><code>netD</code></td>
+<td>Discriminator</td>
+<td>The discriminator model.</td>
+</tr>
+<tr>
+<td><code>optimizerG</code></td>
+<td>torch.optim.Optimizer</td>
+<td>Optimizer for the generator.</td>
+</tr>
+<tr>
+<td><code>optimizerD</code></td>
+<td>torch.optim.Optimizer</td>
+<td>Optimizer for the discriminator.</td>
+</tr>
+<tr>
+<td><code>criterion</code></td>
+<td>torch.nn.modules.loss</td>
+<td>Loss function for computing model losses.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-usage">Example Usage</h3>
+<pre><code class="language-python">trainer = Trainer(epochs=20, lr=0.0002, beta1=0.5, lambda_value=100, device=&quot;cuda&quot;, display=True)
+trainer.train(activate=True)
+</code></pre>
+<h3 id="method-train-discriminator">Method: Train Discriminator</h3>
+<p>This method is responsible for training the discriminator model by using both real and fake data batches. It computes the loss for real and generated images separately and then updates the discriminator's weights based on these losses.</p>
+<h4 id="parameters_1">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>**kwargs</code></td>
+<td>dict</td>
+<td>Keyword arguments containing 'realA' and 'realB', the input and target images for the discriminator.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns">Returns</h4>
+<table>
+<thead>
+<tr>
+<th>Return</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>loss</code></td>
+<td>torch.Tensor</td>
+<td>The total loss for the discriminator after processing both real and fake images.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="notes">Notes</h4>
+<ul>
+<li>This method is designed to be called within the main training loop in the <code>train</code> method. Its primary function is to facilitate the discriminator's learning process by distinguishing between real images (actual data) and fake images (generated by the generator model). The loss calculated reflects the discriminator's performance in correctly identifying real and fake images, which is crucial for adjusting its weights through backpropagation during training.</li>
+</ul>
+<h3 id="method-train-generator">Method: Train Generator</h3>
+<p>This method is responsible for training the discriminator model by using both real and fake data batches. It computes the loss for real and generated images separately and then updates the generator's weights based on these losses.</p>
+<h4 id="parameters_2">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>**kwargs</code></td>
+<td>dict</td>
+<td>Keyword arguments containing 'realA' and 'realB', the input and target images for the generator.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_1">Returns</h4>
+<table>
+<thead>
+<tr>
+<th>Return</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>loss</code></td>
+<td>torch.Tensor</td>
+<td>The total loss for the generator after processing both real and fake images.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="notes_1">Notes</h4>
+<ul>
+<li>This method is designed to be called within the main training loop in the <code>train</code> method. Its primary function is to facilitate the generator's learning process by distinguishing between real images (actual data) and fake images (generated by the generator model). The loss calculated reflects the discriminator's performance in correctly identifying real and fake images, which is crucial for adjusting its weights through backpropagation during training.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../discriminator/" class="btn btn-neutral float-left" title="Discriminator"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../test/" class="btn btn-neutral float-right" title="Test">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../discriminator/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../test/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>CLI - Pix2Pix - Image to Image translation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../css/custom.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "CLI";
+        var mkdocs_page_input_path = "cli.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Pix2Pix - Image to Image translation
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../dataloader/">DataLoader</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../encoder/">Encoder</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../decoder/">Decoder</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../generator/">Generator</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../discriminator/">Discriminator</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../trainer/">Trainer</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../test/">Test</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">CLI</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#features">Features</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#training-command-comparison">Training Command Comparison</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#full-command-options-in-detail">Full Command Options in Detail</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Pix2Pix - Image to Image translation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">CLI</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="pix2pix-image-translation-cli">Pix2Pix Image Translation - cli</h1>
+<p>This project implements the Pix2Pix generative adversarial network (GAN) for image-to-image translation tasks. It provides tools for training and testing the model using custom datasets. This README outlines how to set up and use the project.</p>
+<h2 id="features">Features</h2>
+<ul>
+<li>Train Pix2Pix models on custom datasets.</li>
+<li>Test trained models to generate image translations.</li>
+<li>Normalize input data.</li>
+<li>Configure training parameters such as epochs, learning rate, and lambda values.</li>
+<li>Support for multiple devices including CPU, GPU, and Apple Silicon (MPS).</li>
+<li>Generate samples and display outputs during testing.</li>
+</ul>
+<h3 id="training-command-comparison">Training Command Comparison</h3>
+<table>
+<thead>
+<tr>
+<th>Device Type</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU</td>
+<td><code>python main.py --train --dataset path/to/your/dataset.zip --epochs 20 --lr 0.0002 --beta1 0.5 --lambda_value 100 --device cpu --display True</code></td>
+</tr>
+<tr>
+<td>GPU</td>
+<td><code>python main.py --train --dataset path/to/your/dataset.zip --epochs 20 --lr 0.0002 --beta1 0.5 --lambda_value 100 --device cuda --display True</code></td>
+</tr>
+<tr>
+<td>Apple Silicon (MPS)</td>
+<td><code>python main.py --train --dataset path/to/your/dataset.zip --epochs 20 --lr 0.0002 --beta1 0.5 --lambda_value 100 --device mps --display True</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="full-command-options-in-detail">Full Command Options in Detail</h3>
+<p>Here's a detailed breakdown of the command options for training and testing the Pix2Pix model:</p>
+<ul>
+<li><code>--dataset &lt;path&gt;</code>: Specifies the path to the zip file containing your dataset.</li>
+<li><code>--normalized &lt;True|False&gt;</code>: Indicates whether the data should be normalized. Default is True.</li>
+<li><code>--epochs &lt;number&gt;</code>: Sets the number of training epochs. Default is 20.</li>
+<li><code>--lr &lt;value&gt;</code>: Defines the learning rate for the optimizer. Default is 0.0002.</li>
+<li><code>--beta1 &lt;value&gt;</code>: Sets the Beta1 hyperparameter for the Adam optimizer. Default is 0.5.</li>
+<li><code>--lambda_value &lt;value&gt;</code>: Specifies the lambda value for loss calculation. Default is 100.</li>
+<li><code>--device &lt;cuda|cpu|mps&gt;</code>: Chooses the device to run the model on. Default is 'mps'.</li>
+<li><code>--display &lt;True|False&gt;</code>: Determines whether to display the output during training/testing. Default is True.</li>
+<li><code>--samples &lt;number&gt;</code>: Decides the number of samples to use for plotting during testing. Default is 20.</li>
+<li><code>--train</code>: Flag to initiate training mode.</li>
+<li><code>--test</code>: Flag to initiate testing mode.</li>
+</ul>
+<p>This tabular form and detailed options guide should provide a clear understanding of how to set up and execute the Pix2Pix model training on different devices, as well as how to adjust various training parameters according to your needs.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../test/" class="btn btn-neutral float-left" title="Test"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../test/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

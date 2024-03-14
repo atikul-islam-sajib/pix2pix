@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>DataLoader - Pix2Pix - Image to Image translation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+        <link href="../css/custom.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "DataLoader";
+        var mkdocs_page_input_path = "dataloader.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Pix2Pix - Image to Image translation
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">DataLoader</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../encoder/">Encoder</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../decoder/">Decoder</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../generator/">Generator</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../discriminator/">Discriminator</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../trainer/">Trainer</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../test/">Test</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../cli/">CLI</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Pix2Pix - Image to Image translation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">DataLoader</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <div class="doc doc-object doc-module">
+
+
+
+<a id="dataloader"></a>
+  <div class="doc doc-contents first">
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="dataloader.Loader" class="doc doc-heading">
+          <code>Loader</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>The Loader class is designed for loading, processing, and preparing image datasets for training machine learning models. It supports operations like unzipping dataset folders, normalizing images, and creating data loaders for batch processing.</p>
+<h4 id="dataloader.Loader--parameters">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dataset</td>
+<td>str</td>
+<td>Path to the zip file containing the dataset.</td>
+<td>None</td>
+</tr>
+<tr>
+<td>normalized</td>
+<td>bool</td>
+<td>Indicates whether to normalize images in the dataset.</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+<h4 id="dataloader.Loader--attributes">Attributes</h4>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>batch_size</td>
+<td>int</td>
+<td>The size of data batches. Loaded from <code>config["dataloader"]</code>.</td>
+</tr>
+<tr>
+<td>image_height</td>
+<td>int</td>
+<td>The height of images after resizing. Loaded from <code>config["dataloader"]</code>.</td>
+</tr>
+<tr>
+<td>image_width</td>
+<td>int</td>
+<td>The width of images after resizing. Loaded from <code>config["dataloader"]</code>.</td>
+</tr>
+<tr>
+<td>p_value</td>
+<td>float</td>
+<td>Probability value for applying certain transformations. Loaded from <code>config["dataloader"]</code>.</td>
+</tr>
+<tr>
+<td>normalized_value</td>
+<td>float</td>
+<td>The mean and std value used for normalization. Loaded from <code>config["dataloader"]</code>.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="dataloader.Loader--methods">Methods</h4>
+<ul>
+<li>
+<p><code>unzip_folder()</code>: Extracts the dataset zip file into a specified raw data path. Raises an exception if the raw data folder does not exist.</p>
+</li>
+<li>
+<p><code>_normalized()</code>: Returns a composition of transformations for normalizing images if normalization is enabled.</p>
+</li>
+<li>
+<p><code>create_dataloader()</code>: Creates a DataLoader for the dataset. Raises exceptions if raw or processed data folders do not exist.</p>
+</li>
+</ul>
+<h4 id="dataloader.Loader--examples">Examples</h4>
+<pre><code class="language-python">from config import config  # Ensure you have a config dictionary defined with necessary dataloader configurations.
+
+# Initialize the Loader with the path to your dataset zip file.
+loader = Loader(dataset=&quot;./data.zip&quot;, normalized=True)
+
+# Unzip the dataset.
+loader.unzip_folder()
+
+# Create the DataLoader for batch processing.
+dataloader = loader.create_dataloader()
+</code></pre>
+
+            <details class="quote">
+              <summary>Source code in <code>dataloader.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Loader</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The Loader class is designed for loading, processing, and preparing image datasets for training machine learning models. It supports operations like unzipping dataset folders, normalizing images, and creating data loaders for batch processing.</span>
+
+<span class="sd">    ## Parameters</span>
+
+<span class="sd">    | Parameter   | Type   | Description                                             | Default |</span>
+<span class="sd">    |-------------|--------|---------------------------------------------------------|---------|</span>
+<span class="sd">    | dataset     | str    | Path to the zip file containing the dataset.            | None    |</span>
+<span class="sd">    | normalized  | bool   | Indicates whether to normalize images in the dataset.   | True    |</span>
+
+<span class="sd">    ## Attributes</span>
+
+<span class="sd">    | Attribute        | Type   | Description                                                         |</span>
+<span class="sd">    |------------------|--------|---------------------------------------------------------------------|</span>
+<span class="sd">    | batch_size       | int    | The size of data batches. Loaded from `config[&quot;dataloader&quot;]`.       |</span>
+<span class="sd">    | image_height     | int    | The height of images after resizing. Loaded from `config[&quot;dataloader&quot;]`. |</span>
+<span class="sd">    | image_width      | int    | The width of images after resizing. Loaded from `config[&quot;dataloader&quot;]`. |</span>
+<span class="sd">    | p_value          | float  | Probability value for applying certain transformations. Loaded from `config[&quot;dataloader&quot;]`. |</span>
+<span class="sd">    | normalized_value | float  | The mean and std value used for normalization. Loaded from `config[&quot;dataloader&quot;]`. |</span>
+
+<span class="sd">    ## Methods</span>
+
+<span class="sd">    - `unzip_folder()`: Extracts the dataset zip file into a specified raw data path. Raises an exception if the raw data folder does not exist.</span>
+
+<span class="sd">    - `_normalized()`: Returns a composition of transformations for normalizing images if normalization is enabled.</span>
+
+<span class="sd">    - `create_dataloader()`: Creates a DataLoader for the dataset. Raises exceptions if raw or processed data folders do not exist.</span>
+
+<span class="sd">    ## Examples</span>
+
+<span class="sd">    ```python</span>
+<span class="sd">    from config import config  # Ensure you have a config dictionary defined with necessary dataloader configurations.</span>
+
+<span class="sd">    # Initialize the Loader with the path to your dataset zip file.</span>
+<span class="sd">    loader = Loader(dataset=&quot;./data.zip&quot;, normalized=True)</span>
+
+<span class="sd">    # Unzip the dataset.</span>
+<span class="sd">    loader.unzip_folder()</span>
+
+<span class="sd">    # Create the DataLoader for batch processing.</span>
+<span class="sd">    dataloader = loader.create_dataloader()</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normalized</span> <span class="o">=</span> <span class="n">normalized</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">params</span><span class="p">()[</span><span class="s2">&quot;dataloader&quot;</span><span class="p">][</span><span class="s2">&quot;batch_size&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_height</span> <span class="o">=</span> <span class="n">params</span><span class="p">()[</span><span class="s2">&quot;dataloader&quot;</span><span class="p">][</span><span class="s2">&quot;image_height&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_width</span> <span class="o">=</span> <span class="n">params</span><span class="p">()[</span><span class="s2">&quot;dataloader&quot;</span><span class="p">][</span><span class="s2">&quot;image_width&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p_value</span> <span class="o">=</span> <span class="n">params</span><span class="p">()[</span><span class="s2">&quot;dataloader&quot;</span><span class="p">][</span><span class="s2">&quot;p&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normalized_value</span> <span class="o">=</span> <span class="n">params</span><span class="p">()[</span><span class="s2">&quot;dataloader&quot;</span><span class="p">][</span><span class="s2">&quot;normalized&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">unzip_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Unzips the dataset contained in the dataset zip file into a predefined raw data directory.</span>
+
+<span class="sd">        This method checks if the raw data directory exists before proceeding with the extraction.</span>
+<span class="sd">        If the directory does not exist, it raises an exception to signal the failure of finding the expected directory.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            Exception: If the raw data folder specified by `RAW_DATA_PATH` does not exist,</span>
+<span class="sd">                        an exception is raised indicating the folder could not be found.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; loader = Loader(dataset=&quot;./data.zip&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; loader.unzip_folder()</span>
+<span class="sd">            This would extract the dataset into the `RAW_DATA_PATH` directory,</span>
+<span class="sd">            or raise an exception if the directory does not exist.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_ref</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">RAW_DATA_PATH</span><span class="p">):</span>
+                <span class="n">zip_ref</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">RAW_DATA_PATH</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not find the raw data folder&quot;</span><span class="o">.</span><span class="n">title</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">_normalized</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Configures and returns a composition of image transformations for normalization and augmentation, applied conditionally based on the `normalized` attribute of the Loader class. This method is intended to prepare images for model training by converting them to tensors, resizing, center cropping, applying random vertical flips, and normalizing pixel values.</span>
+
+<span class="sd">        ## Returns</span>
+
+<span class="sd">        A torchvision.transforms.Compose object containing a sequence of transformations applied to the images. If the `normalized` attribute is False, this method will return None.</span>
+
+<span class="sd">        ## Transformations</span>
+
+<span class="sd">        1. **ToTensor**: Converts a PIL image or NumPy `ndarray` into a tensor of the same type with a shape of (C x H x W) in the range [0.0, 1.0].</span>
+<span class="sd">        2. **Resize**: Resizes the image to the specified `image_height` and `image_width` set in the Loader class.</span>
+<span class="sd">        3. **CenterCrop**: Crops the given image at the center to the specified `image_height` and `image_width`.</span>
+<span class="sd">        4. **RandomVerticalFlip**: Randomly flips the image vertically with a probability of `p_value`.</span>
+<span class="sd">        5. **Normalize**: Normalizes each channel of the image to the `normalized_value` for mean and standard deviation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalized</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+                    <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">image_height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_width</span><span class="p">)),</span>
+                    <span class="n">transforms</span><span class="o">.</span><span class="n">CenterCrop</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">image_height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_width</span><span class="p">)),</span>
+                    <span class="n">transforms</span><span class="o">.</span><span class="n">RandomVerticalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">p_value</span><span class="p">),</span>
+                    <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span>
+                        <span class="n">mean</span><span class="o">=</span><span class="p">[</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">normalized_value</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">normalized_value</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">normalized_value</span><span class="p">,</span>
+                        <span class="p">],</span>
+                        <span class="n">std</span><span class="o">=</span><span class="p">[</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">normalized_value</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">normalized_value</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">normalized_value</span><span class="p">,</span>
+                        <span class="p">],</span>
+                    <span class="p">),</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">create_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a DataLoader for the dataset contained within the raw data directory. This DataLoader is configured</span>
+<span class="sd">        with transformations specified by the `_normalized` method and uses the batch size defined in the class</span>
+<span class="sd">        attributes. The DataLoader is serialized and saved to the processed data directory for future use.</span>
+
+<span class="sd">        Before creating the DataLoader, this method checks for the existence of the raw data directory and the processed</span>
+<span class="sd">        data directory. If either directory does not exist, an exception is raised.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            DataLoader: A DataLoader object configured for the dataset with the specified transformations and batch size.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            Exception: If the raw data folder specified by `RAW_DATA_PATH` does not exist, or if the processed data folder</span>
+<span class="sd">                        specified by `PROCESSED_DATA_PATH` does not exist, an exception is raised indicating the missing folder.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; loader = Loader(dataset=&quot;./data.zip&quot;, normalized=True)</span>
+<span class="sd">            &gt;&gt;&gt; loader.unzip_folder()  # Ensure the dataset is unzipped first</span>
+<span class="sd">            &gt;&gt;&gt; dataloader = loader.create_dataloader()</span>
+<span class="sd">            This creates a DataLoader for the unzipped dataset, applies the specified transformations, and saves the</span>
+<span class="sd">            DataLoader object for later use.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            This method relies on global variables `RAW_DATA_PATH` and `PROCESSED_DATA_PATH` to locate the raw and processed</span>
+<span class="sd">            data directories, respectively. Ensure these variables are correctly set before calling this method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">RAW_DATA_PATH</span><span class="p">):</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="n">ImageFolder</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="n">RAW_DATA_PATH</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_normalized</span><span class="p">())</span>
+            <span class="n">dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+                <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">PROCESSED_DATA_PATH</span><span class="p">):</span>
+                <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
+                    <span class="n">value</span><span class="o">=</span><span class="n">dataloader</span><span class="p">,</span>
+                    <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PROCESSED_DATA_PATH</span><span class="p">,</span> <span class="s2">&quot;dataloader.pkl&quot;</span><span class="p">),</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not find the processed data folder&quot;</span><span class="o">.</span><span class="n">title</span><span class="p">())</span>
+
+            <span class="k">return</span> <span class="n">dataloader</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not find the raw data folder&quot;</span><span class="o">.</span><span class="n">title</span><span class="p">())</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="dataloader.Loader.create_dataloader" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">create_dataloader</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Creates a DataLoader for the dataset contained within the raw data directory. This DataLoader is configured
+with transformations specified by the <code>_normalized</code> method and uses the batch size defined in the class
+attributes. The DataLoader is serialized and saved to the processed data directory for future use.</p>
+<p>Before creating the DataLoader, this method checks for the existence of the raw data directory and the processed
+data directory. If either directory does not exist, an exception is raised.</p>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+    <th class="field-name">Returns:</th>
+    <td class="field-body">
+      <ul class="first simple">
+          <li>
+<b><code>DataLoader</code></b>            –
+            <div class="doc-md-description">
+              <p>A DataLoader object configured for the dataset with the specified transformations and batch size.</p>
+            </div>
+          </li>
+      </ul>
+    </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code>Exception</code>
+              –
+              <div class="doc-md-description">
+                <p>If the raw data folder specified by <code>RAW_DATA_PATH</code> does not exist, or if the processed data folder
+        specified by <code>PROCESSED_DATA_PATH</code> does not exist, an exception is raised indicating the missing folder.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>loader = Loader(dataset="./data.zip", normalized=True)
+loader.unzip_folder()  # Ensure the dataset is unzipped first
+dataloader = loader.create_dataloader()
+This creates a DataLoader for the unzipped dataset, applies the specified transformations, and saves the
+DataLoader object for later use.</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+<details class="note" open>
+  <summary>Note</summary>
+  <p>This method relies on global variables <code>RAW_DATA_PATH</code> and <code>PROCESSED_DATA_PATH</code> to locate the raw and processed
+data directories, respectively. Ensure these variables are correctly set before calling this method.</p>
+</details>
+          <details class="quote">
+            <summary>Source code in <code>dataloader.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">create_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a DataLoader for the dataset contained within the raw data directory. This DataLoader is configured</span>
+<span class="sd">    with transformations specified by the `_normalized` method and uses the batch size defined in the class</span>
+<span class="sd">    attributes. The DataLoader is serialized and saved to the processed data directory for future use.</span>
+
+<span class="sd">    Before creating the DataLoader, this method checks for the existence of the raw data directory and the processed</span>
+<span class="sd">    data directory. If either directory does not exist, an exception is raised.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataLoader: A DataLoader object configured for the dataset with the specified transformations and batch size.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        Exception: If the raw data folder specified by `RAW_DATA_PATH` does not exist, or if the processed data folder</span>
+<span class="sd">                    specified by `PROCESSED_DATA_PATH` does not exist, an exception is raised indicating the missing folder.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; loader = Loader(dataset=&quot;./data.zip&quot;, normalized=True)</span>
+<span class="sd">        &gt;&gt;&gt; loader.unzip_folder()  # Ensure the dataset is unzipped first</span>
+<span class="sd">        &gt;&gt;&gt; dataloader = loader.create_dataloader()</span>
+<span class="sd">        This creates a DataLoader for the unzipped dataset, applies the specified transformations, and saves the</span>
+<span class="sd">        DataLoader object for later use.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        This method relies on global variables `RAW_DATA_PATH` and `PROCESSED_DATA_PATH` to locate the raw and processed</span>
+<span class="sd">        data directories, respectively. Ensure these variables are correctly set before calling this method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">RAW_DATA_PATH</span><span class="p">):</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">ImageFolder</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="n">RAW_DATA_PATH</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_normalized</span><span class="p">())</span>
+        <span class="n">dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+            <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">PROCESSED_DATA_PATH</span><span class="p">):</span>
+            <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">dataloader</span><span class="p">,</span>
+                <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PROCESSED_DATA_PATH</span><span class="p">,</span> <span class="s2">&quot;dataloader.pkl&quot;</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not find the processed data folder&quot;</span><span class="o">.</span><span class="n">title</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">dataloader</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not find the raw data folder&quot;</span><span class="o">.</span><span class="n">title</span><span class="p">())</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="dataloader.Loader.unzip_folder" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">unzip_folder</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Unzips the dataset contained in the dataset zip file into a predefined raw data directory.</p>
+<p>This method checks if the raw data directory exists before proceeding with the extraction.
+If the directory does not exist, it raises an exception to signal the failure of finding the expected directory.</p>
+
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code>Exception</code>
+              –
+              <div class="doc-md-description">
+                <p>If the raw data folder specified by <code>RAW_DATA_PATH</code> does not exist,
+        an exception is raised indicating the folder could not be found.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>loader = Loader(dataset="./data.zip")
+loader.unzip_folder()
+This would extract the dataset into the <code>RAW_DATA_PATH</code> directory,
+or raise an exception if the directory does not exist.</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+          <details class="quote">
+            <summary>Source code in <code>dataloader.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span>
+<span class="normal">94</span>
+<span class="normal">95</span>
+<span class="normal">96</span>
+<span class="normal">97</span>
+<span class="normal">98</span>
+<span class="normal">99</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">unzip_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Unzips the dataset contained in the dataset zip file into a predefined raw data directory.</span>
+
+<span class="sd">    This method checks if the raw data directory exists before proceeding with the extraction.</span>
+<span class="sd">    If the directory does not exist, it raises an exception to signal the failure of finding the expected directory.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        Exception: If the raw data folder specified by `RAW_DATA_PATH` does not exist,</span>
+<span class="sd">                    an exception is raised indicating the folder could not be found.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; loader = Loader(dataset=&quot;./data.zip&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; loader.unzip_folder()</span>
+<span class="sd">        This would extract the dataset into the `RAW_DATA_PATH` directory,</span>
+<span class="sd">        or raise an exception if the directory does not exist.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_ref</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">RAW_DATA_PATH</span><span class="p">):</span>
+            <span class="n">zip_ref</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">RAW_DATA_PATH</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not find the raw data folder&quot;</span><span class="o">.</span><span class="n">title</span><span class="p">())</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../encoder/" class="btn btn-neutral float-right" title="Encoder">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../encoder/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
