@@ -21,6 +21,14 @@ This project implements the Pix2Pix Generative Adversarial Network (GAN) for ima
     <img src="./outputs/train_gif/result.gif" alt="AC-GAN - Medical Image Dataset Generator with class labels: Gif file" width="400" height="200">
 </div>
 
+## Usage
+
+Examples of commands - test and their explanations(Do the training and testing).
+
+```bash
+python /path/to/pix2pix/src/cli.py --help
+```
+
 ## Full Command Options
 
 A comprehensive list of options for configuring the training and testing of the Pix2Pix model:
@@ -50,14 +58,6 @@ cd pix2pix
 
 ```
 pip install -r requirements.txt
-```
-
-## Usage
-
-Examples of commands - test and their explanations(Do the training and testing).
-
-```bash
-python /path/to/pix2pix/src/cli.py --help
 ```
 
 ## Training Command Comparison
