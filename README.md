@@ -164,7 +164,7 @@ For detailed documentation on the implementation and usage, visit the -> [pix2pi
 
 For detailed documentation on the implementation and usage using notebook, visit the [Notebook for CLI](./research/notebooks/ModelTrain_CLI.ipynb).
 
-For detailed documentation on the implementation and usage using notebook, visit the [Notebook for Import Modules](./notebooks/ModelTrain_Import_Modules.ipynb).
+For detailed documentation on the implementation and usage using notebook, visit the [Notebook for Import Modules](./research/notebooks/ModelTrain_Modules.ipynb).
 
 ## Contributing
 
