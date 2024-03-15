@@ -1,6 +1,9 @@
 # Pix2Pix Image Translation
 
+##### Facades dataset
 <img src="./outputs/test_images/result.jpg" alt="AC-GAN - Medical Image Dataset Generator: Generated Image with labels">
+
+##### Maps dataset
 
 <img src="./outputs/test_images/result_city.jpg" alt="AC-GAN - Medical Image Dataset Generator: Generated Image with labels">
 
