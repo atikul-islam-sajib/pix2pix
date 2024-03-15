@@ -156,6 +156,13 @@ The procedure remains consistent with the CUDA and MPS sections, with the device
 
 For detailed documentation on the implementation and usage, visit the -> [pix2pix GAN Documentation](https://atikul-islam-sajib.github.io/pix2pix-deploy/).
 
+
+## User's guidance Notebook
+
+For detailed documentation on the implementation and usage using notebook, visit the [Notebook for CLI](./research/notebooks/ModelTrain_CLI.ipynb).
+
+For detailed documentation on the implementation and usage using notebook, visit the [Notebook for Import Modules](./notebooks/ModelTrain_Import_Modules.ipynb).
+
 ## Contributing
 
 Contributions to improve the project are welcome. Please follow the standard procedures for contributing to open-source projects.
