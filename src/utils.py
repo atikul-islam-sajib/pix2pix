@@ -6,7 +6,7 @@ import torch
 import warnings
 
 sys.path.append("src/")
-from config import TRAIN_CHECKPOINTS, LAST_CHECKPOINTS, TEST_IMAGES
+from config import TRAIN_CHECKPOINTS, LAST_CHECKPOINTS, TEST_IMAGES, TRAIN_IMAGES
 
 
 def params():
@@ -128,5 +128,9 @@ def clean(activate=True):
         if os.path.join(TEST_IMAGES):
             for file in os.listdir(TEST_IMAGES):
                 os.remove(os.path.join(TEST_IMAGES, file))
+
+        if os.path.join(TRAIN_IMAGES):
+            for file in os.listdir(TRAIN_IMAGES):
+                os.remove(os.path.join(TRAIN_IMAGES, file))
     else:
         raise ValueError("Define the arguments properly".capitalize())
